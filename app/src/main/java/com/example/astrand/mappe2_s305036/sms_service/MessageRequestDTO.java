@@ -4,17 +4,17 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-public class MessageRequest {
+public class MessageRequestDTO {
 
     List<String> phoneNumbers;
     String message;
 
-    public MessageRequest(List<String> phoneNumbers, String message) {
+    public MessageRequestDTO(List<String> phoneNumbers, String message) {
         this.phoneNumbers = phoneNumbers;
         this.message = message;
     }
 
-    public MessageRequest(){
+    public MessageRequestDTO(){
         phoneNumbers = new ArrayList<>();
     }
 

@@ -25,4 +25,8 @@
     <string name="date_not_set">Date is not set</string>
     <string name="time_not_set">Time is not set</string>
     <string name="time_not_valid">Time is not valid</string>
+    <string name="sms_accept">SMS permissions granted</string>
+    <string name="phone_state_accept">Phone state permissions granted</string>
+    <string name="sms_no_accept">SMS permissions NOT granted</string>
+    <string name="phone_state_no_accept">Phone state permissions NOT granted</string>
 </resources>

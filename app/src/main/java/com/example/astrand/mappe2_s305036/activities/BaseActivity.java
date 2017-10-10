@@ -1,6 +1,7 @@
 package com.example.astrand.mappe2_s305036.activities;
 
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -10,14 +11,17 @@ import android.support.design.widget.BottomNavigationView;
 import android.support.v7.widget.ListViewCompat;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.Toast;
 
 import com.example.astrand.mappe2_s305036.R;
+import com.example.astrand.mappe2_s305036.sms_service.PermissionHelper;
 
 public abstract class BaseActivity extends AppCompatActivity implements BottomNavigationView.OnNavigationItemSelectedListener {
 
     BottomNavigationView navigation;
     ListViewCompat viewList;
     final FragmentManager fm = getSupportFragmentManager();
+    PermissionHelper permissionHelper = new PermissionHelper();
 
 
     @Override
@@ -28,6 +32,7 @@ public abstract class BaseActivity extends AppCompatActivity implements BottomNa
         navigation.setOnNavigationItemSelectedListener(this);
         viewList = findViewById(getViewListId());
         initList();
+        permissionHelper.loopPermissions(this);
     }
 
     @Override
@@ -37,12 +42,15 @@ public abstract class BaseActivity extends AppCompatActivity implements BottomNa
             public void run() {
                 switch (item.getItemId()) {
                     case R.id.navigation_students:
+                        if (BaseActivity.this instanceof StudentActivity) return;
                         startActivity(new Intent(BaseActivity.this, StudentActivity.class));
                         break;
                     case R.id.navigation_auto_msg:
+                        if (BaseActivity.this instanceof AutoMessageActivity) return;
                         startActivity(new Intent(BaseActivity.this, AutoMessageActivity.class));
                         break;
                     case R.id.navigation_messages:
+                        if (BaseActivity.this instanceof MessageActivity) return;
                         startActivity(new Intent(BaseActivity.this, MessageActivity.class));
                 }
                 finish();
@@ -85,5 +93,21 @@ public abstract class BaseActivity extends AppCompatActivity implements BottomNa
         updateNavigationBarState();
     }
 
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
 
+        for (int i = 0; i < permissions.length; i++){
+            String p = permissions[i];
+            switch (requestCode){
+                case PermissionHelper.PERMISSION_CODE:
+                    if (grantResults[i] == PackageManager.PERMISSION_GRANTED){
+                        Toast.makeText(this,getString(p.equals(PermissionHelper.SMS_PERMISSION) ? R.string.sms_accept : R.string.phone_state_accept),Toast.LENGTH_LONG).show();
+                    }else{
+                        Toast.makeText(this,getString(p.equals(PermissionHelper.SMS_PERMISSION) ? R.string.sms_no_accept : R.string.phone_state_no_accept),Toast.LENGTH_LONG).show();
+                    }
+            }
+
+        }
+    }
 }
