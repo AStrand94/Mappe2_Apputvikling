@@ -29,4 +29,5 @@
     <string name="phone_state_accept">Phone state permissions granted</string>
     <string name="sms_no_accept">SMS permissions NOT granted</string>
     <string name="phone_state_no_accept">Phone state permissions NOT granted</string>
+    <string name="resend_msg">Resend message</string>
 </resources>

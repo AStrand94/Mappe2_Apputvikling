@@ -9,6 +9,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.beardedhen.androidbootstrap.AwesomeTextView;
 import com.beardedhen.androidbootstrap.BootstrapButton;
 import com.beardedhen.androidbootstrap.BootstrapEditText;
 import com.example.astrand.mappe2_s305036.R;
@@ -27,6 +28,7 @@ public class SendMessage extends DialogFragment {
     private Message message;
     private BootstrapButton sendButton, cancelButton;
     private BootstrapEditText messageText;
+    private AwesomeTextView descriptionTextView;
 
     @Nullable
     @Override
@@ -45,28 +47,40 @@ public class SendMessage extends DialogFragment {
 
     private void initFields() {
         messageText.setText(message.getMessage());
+        descriptionTextView.setText(getString(R.string.resend_msg));
     }
 
     private void setFields(View rootView) {
         sendButton = rootView.findViewById(R.id.send_msg);
         cancelButton = rootView.findViewById(R.id.cancel_new_auto_msg);
         messageText = rootView.findViewById(R.id.new_msg_txt);
+        descriptionTextView = rootView.findViewById(R.id.send_msg_txtview);
     }
 
     private void initListeners() {
         sendButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                //TODO
+                if (checkFields()){
+                    //TODO: SEND SMS
+                }
             }
         });
 
         cancelButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                //TODO
+                endFragment();
             }
         });
+    }
+
+    private boolean checkFields() {
+        return !messageText.getText().toString().isEmpty();
+    }
+
+    private void endFragment() {
+        dismiss();
     }
 
     private void setMessage(Message message){

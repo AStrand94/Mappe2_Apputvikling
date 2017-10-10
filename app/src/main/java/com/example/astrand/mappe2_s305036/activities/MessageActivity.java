@@ -5,10 +5,12 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.view.View;
+import android.widget.AdapterView;
 
 import com.example.astrand.mappe2_s305036.MyApp;
 import com.example.astrand.mappe2_s305036.R;
 import com.example.astrand.mappe2_s305036.EntityItemAdapter;
+import com.example.astrand.mappe2_s305036.entities.Message;
 import com.example.astrand.mappe2_s305036.entities.MyEntity;
 import com.example.astrand.mappe2_s305036.fragments.SendMessage;
 
@@ -31,6 +33,15 @@ public class MessageActivity extends BaseActivity  {
             @Override
             public void onClick(View view) {
                 showSendMessageFragment(new SendMessage());
+            }
+        });
+
+        viewList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                Message m = (Message)adapterView.getItemAtPosition(i);
+
+                showSendMessageFragment(SendMessage.newInstanceWithMessage(m));
             }
         });
     }
