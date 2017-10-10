@@ -1,0 +1,28 @@
+<resources>
+    <string name="app_name">My Students</string>
+    <string name="title_student_list">Students</string>
+    <string name="title_messages">Sent Messages</string>
+    <string name="title_automatic">Auto messages</string>
+    <string name="error_val">Error value</string>
+    <string name="first_name">First name</string>
+    <string name="last_name">Last name</string>
+    <string name="telephone">Telephone</string>
+    <string name="create">Create</string>
+    <string name="save">Save</string>
+    <string name="cancel">Cancel</string>
+    <string name="delete">Delete</string>
+    <string name="add_student">Add new student</string>
+    <string name="name_error">Name can not be empty nor contain numbers</string>
+    <string name="telephone_error">Length must be between 8 and 12</string>
+    <string name="edit_student">Edit student</string>
+    <string name="new_msg">New message</string>
+    <string name="new_auto_msg">New auto message</string>
+    <string name="new_msg_placeholder">Type your message here..</string>
+    <string name="send">Send</string>
+    <string name="sel_date">Select date</string>
+    <string name="sel_time">Select time</string>
+    <string name="not_be_empty">Field can not be empty</string>
+    <string name="date_not_set">Date is not set</string>
+    <string name="time_not_set">Time is not set</string>
+    <string name="time_not_valid">Time is not valid</string>
+</resources>
