@@ -4,13 +4,17 @@ import android.arch.persistence.room.ColumnInfo;
 import android.arch.persistence.room.Entity;
 import android.arch.persistence.room.PrimaryKey;
 
+import com.example.astrand.mappe2_s305036.DateTimeHelper;
+
+import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Locale;
 
 @Entity
 public class Message implements MyEntity  {
 
     @PrimaryKey(autoGenerate = true)
-    private int id;
+    private long id;
 
     @ColumnInfo(name = "message")
     private String message;
@@ -20,6 +24,17 @@ public class Message implements MyEntity  {
 
     @ColumnInfo(name = "date_to_send")
     private Date dateToSend;
+
+    @ColumnInfo(name = "is_sent")
+    private boolean isSent;
+
+    public boolean isSent() {
+        return isSent;
+    }
+
+    public void setSent(boolean sent) {
+        isSent = sent;
+    }
 
     public boolean isAuto() {
         return isAuto;
@@ -37,11 +52,11 @@ public class Message implements MyEntity  {
         this.dateToSend = dateToSend;
     }
 
-    public int getId() {
+    public long getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(long id) {
         this.id = id;
     }
 
@@ -55,11 +70,15 @@ public class Message implements MyEntity  {
 
     @Override
     public String info1(){
-        return getDateToSend() == null ? "" : getDateToSend().toString();
+        return getDateToSend() == null ? "" : formatDateString(getDateToSend());
     }
 
     @Override
     public String info2(){
         return getMessage();
+    }
+
+    private String formatDateString(Date date){
+        return new SimpleDateFormat("dd MMMM yyyy", Locale.US).format(date);
     }
 }

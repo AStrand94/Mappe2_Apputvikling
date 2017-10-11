@@ -1,28 +1,30 @@
 package com.example.astrand.mappe2_s305036.sms_service;
 
-
-import android.app.Service;
+import android.content.BroadcastReceiver;
+import android.content.ComponentName;
+import android.content.Context;
 import android.content.Intent;
 import android.content.res.Resources;
-import android.os.IBinder;
-import android.support.annotation.Nullable;
 import android.widget.Toast;
 
 import com.example.astrand.mappe2_s305036.MyApp;
 import com.example.astrand.mappe2_s305036.entities.Message;
 
-public class MessageService extends Service{
 
-    @Nullable
+public class MessageAlarmReceiver extends BroadcastReceiver {
+
+
     @Override
-    public IBinder onBind(Intent intent) {
-        return null;
+    public void onReceive(Context context, Intent intent) {
+
+        if (intent.hasExtra(MessageAlarmCreatorUtil.SMS_KEY))
+        {
+            sendMessage(context,intent);
+        }
     }
 
-    @Override
-    public int onStartCommand(Intent intent, int flags, int startId) {
-
-        Toast.makeText(this, "SENDING MESSAGE", Toast.LENGTH_SHORT).show();
+    private void sendMessage(Context context, Intent intent) {
+        Toast.makeText(context, "SENDING MESSAGE", Toast.LENGTH_SHORT).show();
         long id = intent.getLongExtra(MessageAlarmCreatorUtil.SMS_KEY,-1);
         Message message = MyApp.getDatabase().messageDao().getMessageById(id);
 
@@ -32,8 +34,6 @@ public class MessageService extends Service{
         MessageRequestDTO messageRequestDTO = new MessageRequestDTO(MyApp.getDatabase().studentDao().getAllPhoneNumbers(),
                 message.getMessage());
 
-        new MessageSender(messageRequestDTO,message.isAuto()).sendMessage(this);
-
-        return super.onStartCommand(intent, flags, startId);
+        new MessageSender(messageRequestDTO,message.isAuto()).sendMessage(context);
     }
 }

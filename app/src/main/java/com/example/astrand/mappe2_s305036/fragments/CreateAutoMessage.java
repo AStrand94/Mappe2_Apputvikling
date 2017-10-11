@@ -1,25 +1,31 @@
 package com.example.astrand.mappe2_s305036.fragments;
 
-
-import android.app.DatePickerDialog;
+import android.app.AlarmManager;
+import android.content.Context;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.support.v4.app.DialogFragment;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v7.widget.AppCompatSpinner;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.DatePicker;
+import android.widget.ArrayAdapter;
+import android.widget.Switch;
 
+import com.beardedhen.androidbootstrap.AwesomeTextView;
 import com.beardedhen.androidbootstrap.BootstrapButton;
 import com.beardedhen.androidbootstrap.BootstrapEditText;
 import com.example.astrand.mappe2_s305036.DateTimeHelper;
+import com.example.astrand.mappe2_s305036.MyApp;
 import com.example.astrand.mappe2_s305036.R;
 import com.example.astrand.mappe2_s305036.entities.Message;
+import com.example.astrand.mappe2_s305036.sms_service.MessageAlarmCreatorUtil;
 
-import java.util.Calendar;
-import java.util.Date;
+import java.util.ArrayList;
+import java.util.Arrays;
 
 public class CreateAutoMessage extends DialogFragment{
 
@@ -35,6 +41,9 @@ public class CreateAutoMessage extends DialogFragment{
     private BootstrapEditText messageText, selectDate, selectTime;
     private DateTimeHelper dateTimeHelper;
     private BootstrapButton saveButton, cancelButton;
+    private AppCompatSpinner frequencySelector;
+    private Switch autoSwitch;
+    private AwesomeTextView selectFrequencyText;
 
     @Nullable
     @Override
@@ -43,7 +52,6 @@ public class CreateAutoMessage extends DialogFragment{
         getDialog().getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         setFields(rootView);
         initListeners();
-        //instantiateMembers();
 
         if (isEdit) initFields();
 
@@ -60,9 +68,24 @@ public class CreateAutoMessage extends DialogFragment{
         selectTime = rootView.findViewById(R.id.pick_time);
         saveButton = rootView.findViewById(R.id.save_auto_msg);
         cancelButton = rootView.findViewById(R.id.cancel_new_auto_msg);
+        frequencySelector = rootView.findViewById(R.id.auto_freq_spinner);
+        autoSwitch = rootView.findViewById(R.id.is_auto_msg); autoSwitch.setChecked(true);
+        selectFrequencyText = rootView.findViewById(R.id.sel_freq_textview);
+
         dateTimeHelper = new DateTimeHelper(selectDate,selectTime);
-        //datePicker = rootView.findViewById(R.id.datepicker);
+
+        setSpinnerValues();
     }
+
+    private void setSpinnerValues() {
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(getContext(),android.R.layout.simple_list_item_1);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        ArrayList<String> vals = new ArrayList<>();
+        for (MessageFrequency mf : MessageFrequency.values()) vals.add(mf.freq);
+        adapter.addAll(vals);
+        frequencySelector.setAdapter(adapter);
+    }
+
 
     private void initListeners(){
         selectDate.setOnClickListener(new View.OnClickListener() {
@@ -95,15 +118,37 @@ public class CreateAutoMessage extends DialogFragment{
             }
         });
 
+        autoSwitch.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                boolean isOn = autoSwitch.isChecked();
 
+                int visibility = isOn ? View.VISIBLE : View.INVISIBLE;
+                frequencySelector.setVisibility(visibility);
+                selectFrequencyText.setVisibility(visibility);
+            }
+        });
     }
 
     private void createMessageAndCreateAlarm() {
-        dismiss();
+        Message message = createMessage();
+
+        long id = MyApp.getDatabase().messageDao().insertAndGetId(message);
+        message.setId(id);
+
+        MessageAlarmCreatorUtil.createMessageAlarm(message, getContext());
+
     }
 
     private Message createMessage(){
-        return null;
+        Message message = new Message();
+
+        message.setMessage(messageText.getText().toString());
+        message.setDateToSend(dateTimeHelper.getDate());
+        message.setAuto(autoSwitch.isChecked());
+        message.setSent(false);
+
+        return message;
     }
 
     private void endFragment() {

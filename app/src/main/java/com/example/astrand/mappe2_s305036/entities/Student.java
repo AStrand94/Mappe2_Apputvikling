@@ -8,7 +8,7 @@ import android.arch.persistence.room.PrimaryKey;
 public class Student implements MyEntity {
 
     @PrimaryKey(autoGenerate = true)
-    private int id;
+    private long id;
 
     @ColumnInfo(name = "first_name")
     private String firstName;
@@ -19,11 +19,11 @@ public class Student implements MyEntity {
     @ColumnInfo(name = "telephone_number")
     private String telephoneNumber;
 
-    public int getId() {
+    public long getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(long id) {
         this.id = id;
     }
 

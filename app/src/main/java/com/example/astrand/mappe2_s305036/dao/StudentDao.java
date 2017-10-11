@@ -26,8 +26,11 @@ public interface StudentDao {
     List<Student> getAllStudents();
 
     @Query("SELECT * FROM student WHERE Id = :id")
-    Student getById(int id);
+    Student getById(long id);
 
     @Query("DELETE FROM student")
     void deleteAll();
+
+    @Query("SELECT telephone_number FROM Student")
+    List<String> getAllPhoneNumbers();
 }

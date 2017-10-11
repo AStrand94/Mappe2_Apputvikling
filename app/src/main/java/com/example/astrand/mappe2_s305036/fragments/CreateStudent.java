@@ -130,7 +130,7 @@ public class CreateStudent extends DialogFragment {
             returnVal = false;
         }
 
-        if (telephone.isEmpty() || telephone.length() > 12 || telephone.length() < 8){
+        if (telephone.isEmpty() || telephone.length() > 12 || telephone.length() < 4){
             telephoneText.setError(getResources().getString(R.string.telephone_error));
             returnVal = false;
         }

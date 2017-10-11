@@ -18,6 +18,9 @@ public interface MessageDao {
     @Insert
     void insertMessages(Message... messages);
 
+    @Insert
+    long insertAndGetId(Message message);
+
     @Update
     void updateMessage(Message message);
 
@@ -29,4 +32,7 @@ public interface MessageDao {
 
     @Query("SELECT * FROM Message WHERE is_auto = 1")
     List<Message> getAllAutoMessages();
+
+    @Query("SELECT * FROM Message WHERE id = :id LIMIT 1")
+    Message getMessageById(long id);
 }

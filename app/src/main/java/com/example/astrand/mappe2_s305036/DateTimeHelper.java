@@ -32,7 +32,6 @@ public class DateTimeHelper implements OnDateSetListener, TimePickerDialog.OnTim
         dateView.setText(formatDateString(date));
     }
 
-
     @Override
     public void onTimeSet(TimePicker timePicker, int i, int i1) {
         time = new Time(i,i1,0);
@@ -60,9 +59,15 @@ public class DateTimeHelper implements OnDateSetListener, TimePickerDialog.OnTim
         return date != null && time != null;
     }
 
-    private String formatDateString(Date date){
+    public String formatDateString(Date date){
         Date clone = (Date)date.clone();
         clone.setYear(date.getYear() - 1900);
         return new SimpleDateFormat("dd MMMM yyyy", Locale.US).format(clone);
+    }
+
+    public Date getDate(){
+        Date date =  new Date(this.date.getTime() + time.getTime());
+        date.setYear(date.getYear() - 1900);
+        return date;
     }
 }

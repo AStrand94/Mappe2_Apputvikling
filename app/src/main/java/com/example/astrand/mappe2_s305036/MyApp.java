@@ -17,7 +17,7 @@ public class MyApp extends Application {
     public void onCreate() {
         super.onCreate();
         instantiateDatabase(getApplicationContext());
-        setDefaultValuesInDB();
+        //setDefaultValuesInDB();
     }
 
     public static DB getDatabase(){

@@ -30,4 +30,9 @@
     <string name="sms_no_accept">SMS permissions NOT granted</string>
     <string name="phone_state_no_accept">Phone state permissions NOT granted</string>
     <string name="resend_msg">Resend message</string>
+    <string name="msg_sent">Message successfully sent</string>
+    <string name="sms_perm_req">SMS permissions are required</string>
+    <string name="freq_auto_msg">I would like to send this message every..</string>
+    <string name="want_auto_msg">Scheduled message?</string>
+    <string name="msg_scheduled">Message scheduled for </string>
 </resources>

@@ -13,7 +13,7 @@ import java.util.ArrayList;
 public class PermissionHelper {
 
     public static final String SMS_PERMISSION = Manifest.permission.SEND_SMS;
-    public final static String PHONE_STATE_PERMISSION = Manifest.permission.READ_PHONE_STATE;
+    private final static String PHONE_STATE_PERMISSION = Manifest.permission.READ_PHONE_STATE;
     private final static String BOOT_PERMISSION = Manifest.permission.RECEIVE_BOOT_COMPLETED;
 
     public static final int PERMISSION_CODE = 1;
@@ -41,8 +41,16 @@ public class PermissionHelper {
         ActivityCompat.requestPermissions(activity,permissions,requestCode);
     }
 
-    private boolean hasPermission(Context context, String permission){
+    public void promptSMSPermission(Activity activity){
+        requestPermissions(activity,PERMISSION_CODE,SMS_PERMISSION);
+    }
+
+    private static boolean hasPermission(Context context, String permission){
         return ContextCompat.checkSelfPermission(context,permission) == PackageManager.PERMISSION_GRANTED;
+    }
+
+    public static boolean hasSendSMSPermission(Context context){
+        return hasPermission(context,SMS_PERMISSION);
     }
 
 }
