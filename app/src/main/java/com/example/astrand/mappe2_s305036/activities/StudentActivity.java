@@ -3,7 +3,6 @@ package com.example.astrand.mappe2_s305036.activities;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
-import android.support.v4.app.FragmentManager;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
@@ -11,7 +10,7 @@ import android.widget.AdapterView;
 import com.example.astrand.mappe2_s305036.fragments.CreateStudent;
 import com.example.astrand.mappe2_s305036.MyApp;
 import com.example.astrand.mappe2_s305036.R;
-import com.example.astrand.mappe2_s305036.EntityItemAdapter;
+import com.example.astrand.mappe2_s305036.adapters.EntityItemAdapter;
 import com.example.astrand.mappe2_s305036.entities.MyEntity;
 import com.example.astrand.mappe2_s305036.entities.Student;
 

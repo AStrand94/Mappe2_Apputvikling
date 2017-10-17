@@ -1,10 +1,10 @@
 package com.example.astrand.mappe2_s305036.sms_service;
 
 import android.content.BroadcastReceiver;
-import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.Resources;
+import android.util.Log;
 import android.widget.Toast;
 
 import com.example.astrand.mappe2_s305036.MyApp;
@@ -17,14 +17,22 @@ public class MessageAlarmReceiver extends BroadcastReceiver {
     @Override
     public void onReceive(Context context, Intent intent) {
 
-        if (intent.hasExtra(MessageAlarmCreatorUtil.SMS_KEY))
-        {
-            sendMessage(context,intent);
+        Log.d("OnReceive()", "onReceive: " + intent.getAction());
+        if (intent.getAction() != null) {
+            if (intent.getAction().equals(MessageAlarmCreatorUtil.SEND_SMS_ACTION)) {
+                sendMessage(context, intent);
+            }else{
+                Log.d("MyStudents", "onReceive: STARTING SERVICE ResendAlarmsService");
+                context.startService(new Intent(context, ResendAlarmsService.class));
+            }
+        }else {
+            context.startService(new Intent(context, ResendAlarmsService.class));
         }
+        Toast.makeText(context,"onReceive()",Toast.LENGTH_LONG).show();
     }
 
     private void sendMessage(Context context, Intent intent) {
-        Toast.makeText(context, "SENDING MESSAGE", Toast.LENGTH_SHORT).show();
+        Toast.makeText(context, "SENDING AUTO MESSAGE", Toast.LENGTH_SHORT).show();
         long id = intent.getLongExtra(MessageAlarmCreatorUtil.SMS_KEY,-1);
         Message message = MyApp.getDatabase().messageDao().getMessageById(id);
 
@@ -35,5 +43,7 @@ public class MessageAlarmReceiver extends BroadcastReceiver {
                 message.getMessage());
 
         new MessageSender(messageRequestDTO,message.isAuto()).sendMessage(context);
+
+        if (message.isAuto()) MessageUtil.updateSentAutoMessage(message, context);
     }
 }

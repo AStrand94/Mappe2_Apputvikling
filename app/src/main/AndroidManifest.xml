@@ -30,10 +30,11 @@
             />
         <receiver android:name="com.example.astrand.mappe2_s305036.sms_service.MessageAlarmReceiver" android:enabled="true" android:exported="true">
             <intent-filter>
-                <action android:name="android.intent.action.RECEIVE_BOOT_COMPLETED" />
+                <action android:name="android.intent.action.BOOT_COMPLETED" />
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </receiver>
-        <service android:name=".sms_service.MessageService" android:enabled="true"/>
+        <service android:name=".sms_service.MessageService"/>
+        <service android:name=".sms_service.ResendAlarmsService"/>
     </application>
 </manifest>

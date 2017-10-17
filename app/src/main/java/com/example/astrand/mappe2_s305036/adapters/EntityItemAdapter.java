@@ -1,4 +1,4 @@
-package com.example.astrand.mappe2_s305036;
+package com.example.astrand.mappe2_s305036.adapters;
 
 import android.content.Context;
 import android.support.annotation.NonNull;
@@ -8,6 +8,7 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
+import com.example.astrand.mappe2_s305036.R;
 import com.example.astrand.mappe2_s305036.entities.MyEntity;
 
 import java.util.List;

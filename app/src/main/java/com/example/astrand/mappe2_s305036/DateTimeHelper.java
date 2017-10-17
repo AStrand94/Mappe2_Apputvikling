@@ -70,4 +70,8 @@ public class DateTimeHelper implements OnDateSetListener, TimePickerDialog.OnTim
         date.setYear(date.getYear() - 1900);
         return date;
     }
+
+    public boolean isDateValid(){
+        return date != null && time != null && getDate().after(new Date(System.currentTimeMillis()));
+    }
 }

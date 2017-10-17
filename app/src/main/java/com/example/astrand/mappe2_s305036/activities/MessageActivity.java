@@ -9,10 +9,10 @@ import android.widget.AdapterView;
 
 import com.example.astrand.mappe2_s305036.MyApp;
 import com.example.astrand.mappe2_s305036.R;
-import com.example.astrand.mappe2_s305036.EntityItemAdapter;
+import com.example.astrand.mappe2_s305036.adapters.EntityItemAdapter;
 import com.example.astrand.mappe2_s305036.entities.Message;
 import com.example.astrand.mappe2_s305036.entities.MyEntity;
-import com.example.astrand.mappe2_s305036.fragments.SendMessage;
+import com.example.astrand.mappe2_s305036.fragments.SendMessageDialog;
 
 import java.util.List;
 
@@ -32,7 +32,7 @@ public class MessageActivity extends BaseActivity  {
         addMessage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                showSendMessageFragment(new SendMessage());
+                showSendMessageFragment(new SendMessageDialog());
             }
         });
 
@@ -41,7 +41,7 @@ public class MessageActivity extends BaseActivity  {
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                 Message m = (Message)adapterView.getItemAtPosition(i);
 
-                showSendMessageFragment(SendMessage.newInstanceWithMessage(m));
+                showSendMessageFragment(SendMessageDialog.newInstanceWithMessage(m));
             }
         });
     }
@@ -58,7 +58,7 @@ public class MessageActivity extends BaseActivity  {
 
     @Override
     void initList(){
-        List<? extends MyEntity> messages = MyApp.getDatabase().messageDao().getAllMessages();
+        List<? extends MyEntity> messages = MyApp.getDatabase().messageDao().getAllSentMessages();
 
         EntityItemAdapter adapter = new EntityItemAdapter(getApplicationContext(),R.id.messageactivity_list,messages);
         viewList.setAdapter(adapter);
@@ -69,11 +69,11 @@ public class MessageActivity extends BaseActivity  {
         return R.id.messageactivity_list;
     }
 
-    private void showSendMessageFragment(SendMessage sendMessage){
-        sendMessage.show(fm,"CREATE MESSAGE");
+    private void showSendMessageFragment(SendMessageDialog sendMessageDialog){
+        sendMessageDialog.show(fm,"CREATE MESSAGE");
         fm.executePendingTransactions();
 
-        sendMessage.getDialog().setOnDismissListener(new DialogInterface.OnDismissListener() {
+        sendMessageDialog.getDialog().setOnDismissListener(new DialogInterface.OnDismissListener() {
             @Override
             public void onDismiss(DialogInterface dialogInterface) {
                 initList();

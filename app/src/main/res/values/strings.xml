@@ -35,4 +35,9 @@
     <string name="freq_auto_msg">I would like to send this message every..</string>
     <string name="want_auto_msg">Scheduled message?</string>
     <string name="msg_scheduled">Message scheduled for </string>
+    <string name="date_is_before">Date cannot be before today!</string>
+    <string name="daily">Daily</string>
+    <string name="weekly">Weekly</string>
+    <string name="monthly">Monthly</string>
+    <string name="must_select_freq">Frequency must be selected!</string>
 </resources>

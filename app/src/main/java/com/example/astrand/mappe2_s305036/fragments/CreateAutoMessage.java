@@ -14,6 +14,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Switch;
+import android.widget.Toast;
 
 import com.beardedhen.androidbootstrap.AwesomeTextView;
 import com.beardedhen.androidbootstrap.BootstrapButton;
@@ -23,6 +24,7 @@ import com.example.astrand.mappe2_s305036.MyApp;
 import com.example.astrand.mappe2_s305036.R;
 import com.example.astrand.mappe2_s305036.entities.Message;
 import com.example.astrand.mappe2_s305036.sms_service.MessageAlarmCreatorUtil;
+import com.example.astrand.mappe2_s305036.sms_service.MessageUtil;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -81,7 +83,7 @@ public class CreateAutoMessage extends DialogFragment{
         ArrayAdapter<String> adapter = new ArrayAdapter<>(getContext(),android.R.layout.simple_list_item_1);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         ArrayList<String> vals = new ArrayList<>();
-        for (MessageFrequency mf : MessageFrequency.values()) vals.add(mf.freq);
+        for (String freq : MessageUtil.getAllFrequencies(getContext())) vals.add(freq);
         adapter.addAll(vals);
         frequencySelector.setAdapter(adapter);
     }
@@ -147,6 +149,7 @@ public class CreateAutoMessage extends DialogFragment{
         message.setDateToSend(dateTimeHelper.getDate());
         message.setAuto(autoSwitch.isChecked());
         message.setSent(false);
+        message.setMessageInterval(getInterval());
 
         return message;
     }
@@ -176,11 +179,35 @@ public class CreateAutoMessage extends DialogFragment{
             selectTime.setError(getString(R.string.time_not_set));
         }
 
+        if (!dateTimeHelper.isDateValid()){
+            returnValue = false;
+            Toast.makeText(getContext(),getString(R.string.date_is_before),Toast.LENGTH_LONG).show();
+        }
+
+        if (autoSwitch.isChecked() && !selectFrequencyText.getText().toString().isEmpty()){
+            returnValue = false;
+            selectFrequencyText.setError(getString(R.string.must_select_freq));
+        }
+
         return returnValue;
     }
 
     public void setMessage(Message message){
         this.message = message;
         isEdit = false;
+    }
+
+    public byte getInterval() {
+        String chosenFreq = selectFrequencyText.getText().toString();
+
+        if (chosenFreq.equals(getString(R.string.daily))){
+            return 0;
+        }else if (chosenFreq.equals(getString(R.string.weekly))){
+            return 1;
+        }else if (chosenFreq.equals(getString(R.string.monthly))){
+            return 2;
+        }
+
+        return -1;
     }
 }

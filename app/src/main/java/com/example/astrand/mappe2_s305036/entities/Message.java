@@ -28,6 +28,17 @@ public class Message implements MyEntity  {
     @ColumnInfo(name = "is_sent")
     private boolean isSent;
 
+    @ColumnInfo(name = "message_interval")
+    private byte messageInterval;
+
+    public byte getMessageInterval() {
+        return messageInterval;
+    }
+
+    public void setMessageInterval(byte messageInterval) {
+        this.messageInterval = messageInterval;
+    }
+
     public boolean isSent() {
         return isSent;
     }
@@ -80,5 +91,13 @@ public class Message implements MyEntity  {
 
     private String formatDateString(Date date){
         return new SimpleDateFormat("dd MMMM yyyy", Locale.US).format(date);
+    }
+
+    private String formatDateStringWithTime(Date date){
+        return new SimpleDateFormat("dd MMMM yyyy HH:mm", Locale.US).format(date);
+    }
+
+    public String getFormattedDateWithTime(){
+        return formatDateStringWithTime(getDateToSend());
     }
 }

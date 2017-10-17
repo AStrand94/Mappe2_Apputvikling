@@ -2,7 +2,7 @@
   "formatVersion": 1,
   "database": {
     "version": 1,
-    "identityHash": "7bb5036f94991b4e5c76089aa520d89d",
+    "identityHash": "45e0f7604c188f3312d6e1424c949a32",
     "entities": [
       {
         "tableName": "Student",
@@ -44,7 +44,7 @@
       },
       {
         "tableName": "Message",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `message` TEXT, `is_auto` INTEGER NOT NULL, `date_to_send` INTEGER, `is_sent` INTEGER NOT NULL)",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `message` TEXT, `is_auto` INTEGER NOT NULL, `date_to_send` INTEGER, `is_sent` INTEGER NOT NULL, `message_interval` INTEGER NOT NULL)",
         "fields": [
           {
             "fieldPath": "id",
@@ -75,6 +75,12 @@
             "columnName": "is_sent",
             "affinity": "INTEGER",
             "notNull": true
+          },
+          {
+            "fieldPath": "messageInterval",
+            "columnName": "message_interval",
+            "affinity": "INTEGER",
+            "notNull": true
           }
         ],
         "primaryKey": {
@@ -85,60 +91,11 @@
         },
         "indices": [],
         "foreignKeys": []
-      },
-      {
-        "tableName": "StudentMessage",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`student_id` INTEGER NOT NULL, `message_id` INTEGER NOT NULL, PRIMARY KEY(`student_id`), FOREIGN KEY(`student_id`) REFERENCES `Student`(`id`) ON UPDATE NO ACTION ON DELETE NO ACTION , FOREIGN KEY(`message_id`) REFERENCES `Message`(`id`) ON UPDATE NO ACTION ON DELETE NO ACTION )",
-        "fields": [
-          {
-            "fieldPath": "studentId",
-            "columnName": "student_id",
-            "affinity": "INTEGER",
-            "notNull": true
-          },
-          {
-            "fieldPath": "messageId",
-            "columnName": "message_id",
-            "affinity": "INTEGER",
-            "notNull": true
-          }
-        ],
-        "primaryKey": {
-          "columnNames": [
-            "student_id"
-          ],
-          "autoGenerate": false
-        },
-        "indices": [],
-        "foreignKeys": [
-          {
-            "table": "Student",
-            "onDelete": "NO ACTION",
-            "onUpdate": "NO ACTION",
-            "columns": [
-              "student_id"
-            ],
-            "referencedColumns": [
-              "id"
-            ]
-          },
-          {
-            "table": "Message",
-            "onDelete": "NO ACTION",
-            "onUpdate": "NO ACTION",
-            "columns": [
-              "message_id"
-            ],
-            "referencedColumns": [
-              "id"
-            ]
-          }
-        ]
       }
     ],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, \"7bb5036f94991b4e5c76089aa520d89d\")"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, \"45e0f7604c188f3312d6e1424c949a32\")"
     ]
   }
 }

@@ -27,6 +27,9 @@ public interface MessageDao {
     @Query("SELECT * FROM Message")
     List<Message> getAllMessages();
 
+    @Query("SELECT * FROM Message WHERE is_sent = 1")
+    List<Message> getAllSentMessages();
+
     @Query("DELETE FROM Message")
     void deleteAll();
 
@@ -35,4 +38,7 @@ public interface MessageDao {
 
     @Query("SELECT * FROM Message WHERE id = :id LIMIT 1")
     Message getMessageById(long id);
+
+    @Query("SELECT * FROM Message WHERE is_sent = 0")
+    List<Message> getAllSchedule();
 }

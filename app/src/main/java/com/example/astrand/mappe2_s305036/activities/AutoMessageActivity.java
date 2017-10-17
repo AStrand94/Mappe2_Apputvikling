@@ -6,9 +6,11 @@ import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.view.View;
 
-import com.example.astrand.mappe2_s305036.EntityItemAdapter;
+import com.example.astrand.mappe2_s305036.adapters.AutoMessageAdapter;
+import com.example.astrand.mappe2_s305036.adapters.EntityItemAdapter;
 import com.example.astrand.mappe2_s305036.MyApp;
 import com.example.astrand.mappe2_s305036.R;
+import com.example.astrand.mappe2_s305036.entities.Message;
 import com.example.astrand.mappe2_s305036.entities.MyEntity;
 import com.example.astrand.mappe2_s305036.fragments.CreateAutoMessage;
 
@@ -53,9 +55,9 @@ public class AutoMessageActivity extends BaseActivity {
 
     @Override
     void initList() {
-        List<? extends MyEntity> autoMessages = MyApp.getDatabase().messageDao().getAllAutoMessages();
+        List<Message> autoMessages = MyApp.getDatabase().messageDao().getAllAutoMessages();
 
-        EntityItemAdapter adapter = new EntityItemAdapter(getApplicationContext(),R.id.messageactivity_list,autoMessages);
+        AutoMessageAdapter adapter = new AutoMessageAdapter(getApplicationContext(),R.id.messageactivity_list,autoMessages);
         viewList.setAdapter(adapter);
     }
 

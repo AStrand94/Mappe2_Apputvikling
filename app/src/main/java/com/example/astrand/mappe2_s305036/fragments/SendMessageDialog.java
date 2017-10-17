@@ -22,10 +22,10 @@ import com.example.astrand.mappe2_s305036.sms_service.MessageSender;
 import com.example.astrand.mappe2_s305036.sms_service.PermissionHelper;
 
 
-public class SendMessage extends DialogFragment {
+public class SendMessageDialog extends DialogFragment {
 
-    public static SendMessage newInstanceWithMessage(Message message){
-        SendMessage sm = new SendMessage();
+    public static SendMessageDialog newInstanceWithMessage(Message message){
+        SendMessageDialog sm = new SendMessageDialog();
         sm.setMessage(message);
         return sm;
     }

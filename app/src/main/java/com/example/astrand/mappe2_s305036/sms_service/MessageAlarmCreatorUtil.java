@@ -14,13 +14,16 @@ import com.example.astrand.mappe2_s305036.entities.Message;
 public class MessageAlarmCreatorUtil {
 
     public static final String SMS_KEY = "SMS";
+    public static final String SEND_SMS_ACTION = "send";
 
     public static void createMessageAlarm(Message message, Context context){
         AlarmManager alarmManager = (AlarmManager)context.getSystemService(Context.ALARM_SERVICE);
 
         Intent intent = new Intent(context,MessageAlarmReceiver.class);
         intent.putExtra(SMS_KEY,message.getId());
-        PendingIntent pendingIntent = PendingIntent.getBroadcast(context.getApplicationContext(),0,intent,PendingIntent.FLAG_ONE_SHOT);
+        intent.setAction(SEND_SMS_ACTION);
+        int _id = (int)System.currentTimeMillis();
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(context.getApplicationContext(),_id,intent,PendingIntent.FLAG_ONE_SHOT);
 
         alarmManager.set(AlarmManager.RTC,message.getDateToSend().getTime(),pendingIntent);
 
