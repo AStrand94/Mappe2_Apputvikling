@@ -25,6 +25,7 @@ public class StudentActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         addButton = findViewById(R.id.addButton);
         initListeners();
+        setTitle(R.string.title_student_list);
     }
 
 

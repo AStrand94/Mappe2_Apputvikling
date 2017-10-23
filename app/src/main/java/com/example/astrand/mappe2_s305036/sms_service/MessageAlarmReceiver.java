@@ -10,6 +10,8 @@ import android.widget.Toast;
 import com.example.astrand.mappe2_s305036.MyApp;
 import com.example.astrand.mappe2_s305036.entities.Message;
 
+import java.util.Date;
+
 
 public class MessageAlarmReceiver extends BroadcastReceiver {
 
@@ -17,7 +19,7 @@ public class MessageAlarmReceiver extends BroadcastReceiver {
     @Override
     public void onReceive(Context context, Intent intent) {
 
-        Log.d("OnReceive()", "onReceive: " + intent.getAction());
+        Log.d("OnReceive()", "MessageAlarmReceiver.onReceive(): " + intent.getAction());
         if (intent.getAction() != null) {
             if (intent.getAction().equals(MessageAlarmCreatorUtil.SEND_SMS_ACTION)) {
                 sendMessage(context, intent);
@@ -28,7 +30,6 @@ public class MessageAlarmReceiver extends BroadcastReceiver {
         }else {
             context.startService(new Intent(context, ResendAlarmsService.class));
         }
-        Toast.makeText(context,"onReceive()",Toast.LENGTH_LONG).show();
     }
 
     private void sendMessage(Context context, Intent intent) {
@@ -36,14 +37,20 @@ public class MessageAlarmReceiver extends BroadcastReceiver {
         long id = intent.getLongExtra(MessageAlarmCreatorUtil.SMS_KEY,-1);
         Message message = MyApp.getDatabase().messageDao().getMessageById(id);
 
-        if (message == null)
-            throw new Resources.NotFoundException("Message with id " + id + " was not found");
+        if (message == null || message.getDateToSend().getTime() > (new Date().getTime() + MessageUtil.DAY_IN_MILLIS)){
+            //message is deleted, auto is stopped or this is an old alarm where the auto has been updated
+            return;
+        }
 
         MessageRequestDTO messageRequestDTO = new MessageRequestDTO(MyApp.getDatabase().studentDao().getAllPhoneNumbers(),
                 message.getMessage());
 
         new MessageSender(messageRequestDTO,message.isAuto()).sendMessage(context);
 
-        if (message.isAuto()) MessageUtil.updateSentAutoMessage(message, context);
+        if (message.isAuto()) {
+            MessageUtil.updateSentAutoMessage(message, context);
+        } else {
+            MessageUtil.setMessageSent(message);
+        }
     }
 }

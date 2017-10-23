@@ -41,7 +41,6 @@ public class ResendAlarmsService extends Service {
                 new MessageSender(new MessageRequestDTO(phoneNumbers, m.getMessage()),m.isAuto())
                         .sendMessage(this);
                 if (m.isAuto()) MessageUtil.updateSentAutoMessage(m,this);
-                msgList.remove(m);
             }else{
                 MessageAlarmCreatorUtil.createMessageAlarm(m,this);
             }

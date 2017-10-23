@@ -40,7 +40,7 @@ public class MessageRequestDTO {
     public void saveSentMessageToDB(boolean isAutoMessage){
 
         Message messageEntity = new Message();
-        messageEntity.setAuto(isAutoMessage);
+        messageEntity.setAuto(isAutoMessage );
         messageEntity.setDateToSend(Calendar.getInstance().getTime());
         messageEntity.setSent(true);
         messageEntity.setMessage(message);

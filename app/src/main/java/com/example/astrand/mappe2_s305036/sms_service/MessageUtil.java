@@ -8,6 +8,7 @@ import com.example.astrand.mappe2_s305036.R;
 import com.example.astrand.mappe2_s305036.entities.Message;
 
 import java.util.Arrays;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
@@ -20,7 +21,7 @@ public final class MessageUtil {
     public static final long WEEK_IN_MILLIS = 604_800_000;
 
     public static final byte TWO_WEEK_ID = 3;
-    public static final long TWO_WEEKS_IN_MILLIS = 1_209_600_000;
+    public static final long MONTH_IN_MILLIS = 2629743830L;
 
     public static void updateSentAutoMessage(Message message, Context context){
         message.setSent(true);
@@ -37,10 +38,7 @@ public final class MessageUtil {
         clone.setMessage(message.getMessage());
         clone.setSent(false);
         clone.setAuto(true);
-        if (message.getMessageInterval() != 0) //If is null, date_to_send might be null value
-            clone.setDateToSend(new Date(getUpdatedDate(message.getMessageInterval(),message.getDateToSend().getTime())));
-        else
-            clone.setDateToSend(new Date(System.currentTimeMillis() + WEEK_IN_MILLIS));
+        clone.setDateToSend(new Date(getNextDateToSend(message)));
         clone.setMessageInterval(message.getMessageInterval());
 
         return clone;
@@ -49,7 +47,7 @@ public final class MessageUtil {
     private static long getUpdatedDate(byte interval_id, long time){
         if (interval_id == DAY_ID) return time + DAY_IN_MILLIS;
         else if (interval_id == WEEK_ID) return time + WEEK_IN_MILLIS;
-        else if (interval_id == TWO_WEEK_ID) return time + TWO_WEEKS_IN_MILLIS;
+        else if (interval_id == TWO_WEEK_ID) return time + MONTH_IN_MILLIS;
         else return time + WEEK_IN_MILLIS;
     }
 
@@ -57,7 +55,23 @@ public final class MessageUtil {
         if(id == 0) return context.getString(R.string.daily);
         else if (id == 1) return context.getString(R.string.weekly);
         else if (id == 2) return context.getString(R.string.monthly);
-        return "none";
+        return "";
+    }
+
+    private static long getNextDateToSend(Message message){
+        byte interval = message.getMessageInterval();
+        Calendar calendar = Calendar.getInstance();
+
+        switch (interval){
+            case 0:
+                return message.getDateToSend().getTime() + DAY_IN_MILLIS;
+            case 2:
+                calendar.setTime(message.getDateToSend());
+                calendar.add(Calendar.MONTH,1);
+                return calendar.getTime().getTime();
+            default:
+                return message.getDateToSend().getTime() + WEEK_IN_MILLIS;
+        }
     }
 
     public static List<String> getAllFrequencies(Context context){
@@ -66,5 +80,10 @@ public final class MessageUtil {
                 context.getString(R.string.weekly),
                 context.getString(R.string.monthly)
         );
+    }
+
+    public static void setMessageSent(Message message){
+        message.setSent(true);
+        MyApp.getDatabase().messageDao().updateMessage(message);
     }
 }

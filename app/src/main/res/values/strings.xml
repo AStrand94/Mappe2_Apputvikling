@@ -1,13 +1,13 @@
 <resources>
     <string name="app_name">My Students</string>
     <string name="title_student_list">Students</string>
-    <string name="title_messages">Sent Messages</string>
-    <string name="title_automatic">Auto messages</string>
+    <string name="title_messages">Log</string>
+    <string name="title_scheduled">Send message</string>
     <string name="error_val">Error value</string>
     <string name="first_name">First name</string>
     <string name="last_name">Last name</string>
     <string name="telephone">Telephone</string>
-    <string name="create">Create</string>
+    <string name="schedule">Schedule</string>
     <string name="save">Save</string>
     <string name="cancel">Cancel</string>
     <string name="delete">Delete</string>
@@ -15,7 +15,6 @@
     <string name="name_error">Name can not be empty nor contain numbers</string>
     <string name="telephone_error">Length must be between 8 and 12</string>
     <string name="edit_student">Edit student</string>
-    <string name="new_msg">New message</string>
     <string name="new_auto_msg">New auto message</string>
     <string name="new_msg_placeholder">Type your message here..</string>
     <string name="send">Send</string>
@@ -32,7 +31,7 @@
     <string name="resend_msg">Resend message</string>
     <string name="msg_sent">Message successfully sent</string>
     <string name="sms_perm_req">SMS permissions are required</string>
-    <string name="freq_auto_msg">I would like to send this message every..</string>
+    <string name="freq_auto_msg">I would like to send this message..</string>
     <string name="want_auto_msg">Scheduled message?</string>
     <string name="msg_scheduled">Message scheduled for </string>
     <string name="date_is_before">Date cannot be before today!</string>
@@ -40,4 +39,8 @@
     <string name="weekly">Weekly</string>
     <string name="monthly">Monthly</string>
     <string name="must_select_freq">Frequency must be selected!</string>
+    <string name="edit_auto_msg">Edit auto-message</string>
+    <string name="stop_auto">Stop schedule</string>
+    <string name="sent">Sent </string>
+    <string name="send_now">Send now</string>
 </resources>

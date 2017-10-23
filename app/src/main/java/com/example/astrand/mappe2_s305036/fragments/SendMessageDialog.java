@@ -19,6 +19,7 @@ import com.example.astrand.mappe2_s305036.R;
 import com.example.astrand.mappe2_s305036.entities.Message;
 import com.example.astrand.mappe2_s305036.sms_service.MessageRequestDTO;
 import com.example.astrand.mappe2_s305036.sms_service.MessageSender;
+import com.example.astrand.mappe2_s305036.sms_service.MessageUtil;
 import com.example.astrand.mappe2_s305036.sms_service.PermissionHelper;
 
 
@@ -32,7 +33,7 @@ public class SendMessageDialog extends DialogFragment {
 
     private boolean isResend = false; //If to send a message that is already sent before
     private Message message;
-    private BootstrapButton sendButton, cancelButton;
+    private BootstrapButton cancelButton, deleteButton;
     private BootstrapEditText messageText;
     private AwesomeTextView descriptionTextView;
 
@@ -52,43 +53,33 @@ public class SendMessageDialog extends DialogFragment {
 
 
     private void initFields() {
+        messageText.setFocusable(false);
         messageText.setText(message.getMessage());
         descriptionTextView.setText(getString(R.string.resend_msg));
+        descriptionTextView.setText(getString(R.string.sent) + " " + message.getFormattedDateWithTime());
     }
 
     private void setFields(View rootView) {
-        sendButton = rootView.findViewById(R.id.send_msg);
+        deleteButton = rootView.findViewById(R.id.delete_sent_msg);
         cancelButton = rootView.findViewById(R.id.cancel_new_auto_msg);
         messageText = rootView.findViewById(R.id.new_msg_txt);
         descriptionTextView = rootView.findViewById(R.id.send_msg_txtview);
     }
 
     private void initListeners() {
-        sendButton.setOnClickListener(new View.OnClickListener() {
+        deleteButton.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View view) {
-                if (checkFields()){
-                    sendMessage();
-                }
+            public void onClick(View v) {
+                MyApp.getDatabase().messageDao().deleteMessage(message);
+                endFragment();
             }
         });
-
         cancelButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 endFragment();
             }
         });
-    }
-
-    private boolean checkFields() {
-        boolean returnValue = true;
-        if(messageText.getText().toString().isEmpty()){
-            returnValue = false;
-            messageText.setError(getString(R.string.not_be_empty));
-        }
-
-        return returnValue;
     }
 
     private void endFragment() {
@@ -100,17 +91,4 @@ public class SendMessageDialog extends DialogFragment {
         isResend = true;
     }
 
-    private void sendMessage(){
-        MessageRequestDTO messageRequestDTO = new MessageRequestDTO(
-                MyApp.getDatabase().studentDao().getAllPhoneNumbers(),messageText.getText().toString());
-
-        boolean messageResult = new MessageSender(messageRequestDTO,false).sendMessage(getContext());
-        if (!messageResult){
-            Toast.makeText(getContext(),getString(R.string.sms_perm_req),Toast.LENGTH_LONG).show();
-            new PermissionHelper().promptSMSPermission((Activity)getContext());
-        }else{
-            Toast.makeText(getContext(),getString(R.string.msg_sent),Toast.LENGTH_LONG).show();
-            endFragment();
-        }
-    }
 }

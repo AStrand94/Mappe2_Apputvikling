@@ -5,6 +5,7 @@ import android.arch.persistence.room.Delete;
 import android.arch.persistence.room.Insert;
 import android.arch.persistence.room.Query;
 import android.arch.persistence.room.Update;
+import android.database.Cursor;
 
 import com.example.astrand.mappe2_s305036.entities.Student;
 
@@ -15,6 +16,9 @@ public interface StudentDao {
 
     @Insert
     void insertStudent(Student student);
+
+    @Insert
+    long insertAndGetId(Student student);
 
     @Delete
     void deleteStudent(Student student);
@@ -33,4 +37,13 @@ public interface StudentDao {
 
     @Query("SELECT telephone_number FROM Student")
     List<String> getAllPhoneNumbers();
+
+    @Query("SELECT * FROM Student")
+    Cursor selectAll();
+
+    @Query("SELECT * FROM Student WHERE id = :id")
+    Cursor selectById(long id);
+
+    @Query("DELETE FROM Student WHERE id = :id")
+    int deleteById(long id);
 }

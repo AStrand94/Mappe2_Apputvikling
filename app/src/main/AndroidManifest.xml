@@ -36,5 +36,12 @@
         </receiver>
         <service android:name=".sms_service.MessageService"/>
         <service android:name=".sms_service.ResendAlarmsService"/>
+        <provider
+            android:name="com.example.astrand.mappe2_s305036.provider.MyContentProvider"
+            android:authorities="com.example.mappe2_s305036.provider"
+            android:exported="true"
+            android:enabled="true"
+            android:readPermission="com.example.mappe2_s305036.provider.permission"
+            android:writePermission="com.example.mappe2_s305036.provider.permission"/>
     </application>
 </manifest>

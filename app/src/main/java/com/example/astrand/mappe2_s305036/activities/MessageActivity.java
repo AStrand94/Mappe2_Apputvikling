@@ -19,22 +19,15 @@ import java.util.List;
 
 public class MessageActivity extends BaseActivity  {
 
-    FloatingActionButton addMessage;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        addMessage = findViewById(R.id.addMessageButton);
         initListeners();
+        setTitle(R.string.title_messages);
     }
 
     private void initListeners(){
-        addMessage.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                showSendMessageFragment(new SendMessageDialog());
-            }
-        });
 
         viewList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override

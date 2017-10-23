@@ -2,10 +2,10 @@
   "formatVersion": 1,
   "database": {
     "version": 1,
-    "identityHash": "45e0f7604c188f3312d6e1424c949a32",
+    "identityHash": "963eeb5e21452e62288e600e1a138b4d",
     "entities": [
       {
-        "tableName": "Student",
+        "tableName": "student",
         "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `first_name` TEXT, `last_name` TEXT, `telephone_number` TEXT)",
         "fields": [
           {
@@ -43,7 +43,7 @@
         "foreignKeys": []
       },
       {
-        "tableName": "Message",
+        "tableName": "message",
         "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `message` TEXT, `is_auto` INTEGER NOT NULL, `date_to_send` INTEGER, `is_sent` INTEGER NOT NULL, `message_interval` INTEGER NOT NULL)",
         "fields": [
           {
@@ -95,7 +95,7 @@
     ],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, \"45e0f7604c188f3312d6e1424c949a32\")"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, \"963eeb5e21452e62288e600e1a138b4d\")"
     ]
   }
 }
