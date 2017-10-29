@@ -3,7 +3,6 @@ package com.example.astrand.mappe2_s305036.activities;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.design.widget.FloatingActionButton;
 import android.view.View;
 import android.widget.AdapterView;
 
@@ -12,7 +11,7 @@ import com.example.astrand.mappe2_s305036.R;
 import com.example.astrand.mappe2_s305036.adapters.EntityItemAdapter;
 import com.example.astrand.mappe2_s305036.entities.Message;
 import com.example.astrand.mappe2_s305036.entities.MyEntity;
-import com.example.astrand.mappe2_s305036.fragments.SendMessageDialog;
+import com.example.astrand.mappe2_s305036.fragments.ShowMessageDialog;
 
 import java.util.List;
 
@@ -24,7 +23,7 @@ public class MessageActivity extends BaseActivity  {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         initListeners();
-        setTitle(R.string.title_messages);
+        //setTitle(R.string.title_messages);
     }
 
     private void initListeners(){
@@ -34,7 +33,7 @@ public class MessageActivity extends BaseActivity  {
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                 Message m = (Message)adapterView.getItemAtPosition(i);
 
-                showSendMessageFragment(SendMessageDialog.newInstanceWithMessage(m));
+                showSendMessageFragment(ShowMessageDialog.newInstanceWithMessage(m));
             }
         });
     }
@@ -62,11 +61,11 @@ public class MessageActivity extends BaseActivity  {
         return R.id.messageactivity_list;
     }
 
-    private void showSendMessageFragment(SendMessageDialog sendMessageDialog){
-        sendMessageDialog.show(fm,"CREATE MESSAGE");
+    private void showSendMessageFragment(ShowMessageDialog showMessageDialog){
+        showMessageDialog.show(fm,"CREATE MESSAGE");
         fm.executePendingTransactions();
 
-        sendMessageDialog.getDialog().setOnDismissListener(new DialogInterface.OnDismissListener() {
+        showMessageDialog.getDialog().setOnDismissListener(new DialogInterface.OnDismissListener() {
             @Override
             public void onDismiss(DialogInterface dialogInterface) {
                 initList();

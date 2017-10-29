@@ -22,6 +22,7 @@ public class AutoMessageAdapter extends ArrayAdapter<Message> {
     }
 
     @Override
+    @NonNull
     public View getView(int position, View convertView, @NonNull ViewGroup parent) {
 
         Message message= getItem(position);
@@ -34,7 +35,7 @@ public class AutoMessageAdapter extends ArrayAdapter<Message> {
         TextView t2 = convertView.findViewById(R.id.auto_msg_text_view);
         TextView t3 = convertView.findViewById(R.id.schedule_time_text);
 
-        t1.setText(message.getFormattedDateWithTime());
+        t1.setText(message.getDateToSend() != null ? message.getFormattedDateWithTime() : "");
         t2.setText(message.getMessage());
         t3.setText(MessageUtil.getDateScheduleAsString(message.getMessageInterval(),getContext()));
 

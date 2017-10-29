@@ -27,7 +27,7 @@ public class MessageSender {
             sendMessage(phoneNr,messageRequestDTO.getMessage());
         }
 
-        messageRequestDTO.saveSentMessageToDB(false);
+        //messageRequestDTO.saveSentMessageToDB(false);
 
         return true;
     }

@@ -1,6 +1,5 @@
 package com.example.astrand.mappe2_s305036.fragments;
 
-import android.app.Activity;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.support.v4.app.DialogFragment;
@@ -9,7 +8,6 @@ import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
 import com.beardedhen.androidbootstrap.AwesomeTextView;
 import com.beardedhen.androidbootstrap.BootstrapButton;
@@ -17,16 +15,12 @@ import com.beardedhen.androidbootstrap.BootstrapEditText;
 import com.example.astrand.mappe2_s305036.MyApp;
 import com.example.astrand.mappe2_s305036.R;
 import com.example.astrand.mappe2_s305036.entities.Message;
-import com.example.astrand.mappe2_s305036.sms_service.MessageRequestDTO;
-import com.example.astrand.mappe2_s305036.sms_service.MessageSender;
-import com.example.astrand.mappe2_s305036.sms_service.MessageUtil;
-import com.example.astrand.mappe2_s305036.sms_service.PermissionHelper;
 
 
-public class SendMessageDialog extends DialogFragment {
+public class ShowMessageDialog extends DialogFragment {
 
-    public static SendMessageDialog newInstanceWithMessage(Message message){
-        SendMessageDialog sm = new SendMessageDialog();
+    public static ShowMessageDialog newInstanceWithMessage(Message message){
+        ShowMessageDialog sm = new ShowMessageDialog();
         sm.setMessage(message);
         return sm;
     }

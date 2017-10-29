@@ -33,7 +33,6 @@ public class MessageAlarmReceiver extends BroadcastReceiver {
     }
 
     private void sendMessage(Context context, Intent intent) {
-        Toast.makeText(context, "SENDING AUTO MESSAGE", Toast.LENGTH_SHORT).show();
         long id = intent.getLongExtra(MessageAlarmCreatorUtil.SMS_KEY,-1);
         Message message = MyApp.getDatabase().messageDao().getMessageById(id);
 

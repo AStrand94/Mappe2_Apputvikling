@@ -100,7 +100,7 @@ public class Message implements MyEntity  {
     }
 
     public String formatDateString(Date date){
-        return new SimpleDateFormat("dd MMMM yyyy", Locale.US).format(date);
+        return  date == null ? "" : new SimpleDateFormat("dd MMMM yyyy", Locale.US).format(date);
     }
 
     private String formatDateStringWithTime(Date date){

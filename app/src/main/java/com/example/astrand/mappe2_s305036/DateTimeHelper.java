@@ -20,6 +20,7 @@ public class DateTimeHelper implements OnDateSetListener, TimePickerDialog.OnTim
     private Date date;
     private Time time;
     private TextView dateView, timeView;
+    private Date fullDate;
 
     public DateTimeHelper(TextView dateView, TextView timeView){
         this.dateView = dateView;
@@ -66,12 +67,24 @@ public class DateTimeHelper implements OnDateSetListener, TimePickerDialog.OnTim
     }
 
     public Date getDate(){
-        Date date =  new Date(this.date.getTime() + time.getTime());
+        Date date = new Date(this.date.getTime() + time.getTime());
         date.setYear(date.getYear() - 1900);
         return date;
     }
 
     public boolean isDateValid(){
-        return date != null && time != null && getDate().after(new Date(System.currentTimeMillis()));
+        if (date == null || time == null){
+            return fullDate != null && fullDate.after(new Date(System.currentTimeMillis()));
+        }else{
+            return getDate().after(new Date(System.currentTimeMillis()));
+        }
+    }
+
+    public void setDateTime(long dateTime) {
+        this.fullDate = new Date(dateTime);
+    }
+
+    public Date getFullDate(){
+        return fullDate;
     }
 }

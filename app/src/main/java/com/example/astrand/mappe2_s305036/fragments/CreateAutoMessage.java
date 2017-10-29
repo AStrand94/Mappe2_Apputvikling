@@ -18,7 +18,6 @@ import android.widget.Toast;
 import com.beardedhen.androidbootstrap.AwesomeTextView;
 import com.beardedhen.androidbootstrap.BootstrapButton;
 import com.beardedhen.androidbootstrap.BootstrapEditText;
-import com.beardedhen.androidbootstrap.api.attributes.BootstrapBrand;
 import com.beardedhen.androidbootstrap.api.defaults.DefaultBootstrapBrand;
 import com.example.astrand.mappe2_s305036.DateTimeHelper;
 import com.example.astrand.mappe2_s305036.MyApp;
@@ -32,6 +31,7 @@ import com.example.astrand.mappe2_s305036.sms_service.PermissionHelper;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.Locale;
 
 public class CreateAutoMessage extends DialogFragment{
@@ -48,7 +48,7 @@ public class CreateAutoMessage extends DialogFragment{
     private AppCompatTextView topText;
     private BootstrapEditText messageText, selectDate, selectTime;
     private DateTimeHelper dateTimeHelper;
-    private BootstrapButton saveButton, cancelButton, deleteButton;
+    private BootstrapButton scheduleButton, cancelButton, sendOrDeleteButton;
     private AppCompatSpinner frequencySelector;
     private Switch autoSwitch;
     private AwesomeTextView selectFrequencyText;
@@ -71,18 +71,27 @@ public class CreateAutoMessage extends DialogFragment{
     }
 
     private void initNotEdit() {
-        //deleteButton.setVisibility(View.INVISIBLE);
-        deleteButton.setBootstrapBrand(DefaultBootstrapBrand.PRIMARY);
-        deleteButton.setText(R.string.send_now);
+        sendOrDeleteButton.setBootstrapBrand(DefaultBootstrapBrand.PRIMARY);
+        sendOrDeleteButton.setText(R.string.send_now);
     }
 
     private void initFields() {
         topText.setText(getString(R.string.edit_auto_msg));
         messageText.setText(message.getMessage());
         selectDate.setText(message.formatDateString(message.getDateToSend()));
-        selectTime.setText(new SimpleDateFormat("HH:mm", Locale.US).format(message.getDateToSend()));
+        selectTime.setText(message.getDateToSend() == null ? "" : new SimpleDateFormat("HH:mm", Locale.US).format(message.getDateToSend()));
         frequencySelector.setSelection(message.getMessageInterval());
-        autoSwitch.setChecked(message.isAuto());
+
+        if (message.isAuto()) {
+            autoSwitch.setChecked(true);
+            frequencySelector.setVisibility(View.VISIBLE);
+            selectFrequencyText.setVisibility(View.VISIBLE);
+        }
+
+        if(message.getDateToSend() != null) {
+            dateTimeHelper.onDateSet(null,message.getDateToSend().getYear()+1900, message.getDateToSend().getMonth(), message.getDateToSend().getDate());
+            dateTimeHelper.onTimeSet(null,message.getDateToSend().getHours(),message.getDateToSend().getMinutes());
+        }
     }
 
     private void setFields(View rootView){
@@ -90,9 +99,9 @@ public class CreateAutoMessage extends DialogFragment{
         messageText = rootView.findViewById(R.id.auto_msg_txt);
         selectDate = rootView.findViewById(R.id.pick_date);
         selectTime = rootView.findViewById(R.id.pick_time);
-        saveButton = rootView.findViewById(R.id.save_auto_msg);
+        scheduleButton = rootView.findViewById(R.id.save_auto_msg);
         cancelButton = rootView.findViewById(R.id.cancel_new_auto_msg);
-        deleteButton = rootView.findViewById(R.id.delete_btn_auto);
+        sendOrDeleteButton = rootView.findViewById(R.id.delete_btn_auto);
         frequencySelector = rootView.findViewById(R.id.auto_freq_spinner);
         autoSwitch = rootView.findViewById(R.id.is_auto_msg); autoSwitch.setChecked(true);
         selectFrequencyText = rootView.findViewById(R.id.sel_freq_textview);
@@ -126,10 +135,10 @@ public class CreateAutoMessage extends DialogFragment{
             }
         });
 
-        saveButton.setOnClickListener(new View.OnClickListener() {
+        scheduleButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (checkFields()){
+                if (checkFields(false)){
                     if (!isEdit)
                         createMessageAndCreateAlarm();
                     else
@@ -146,12 +155,12 @@ public class CreateAutoMessage extends DialogFragment{
             }
         });
 
-        deleteButton.setOnClickListener(new View.OnClickListener() {
+        sendOrDeleteButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(isEdit && checkFields()){
+                if(!isEdit && checkFields(true)){
                     sendMessage();
-                }else {
+                }else if(isEdit){
                     MyApp.getDatabase().messageDao().deleteMessage(message);
                     endFragment();
                 }
@@ -205,7 +214,7 @@ public class CreateAutoMessage extends DialogFragment{
         dismiss();
     }
 
-    private boolean checkFields() {
+    private boolean checkFields(boolean sendNow) {
         boolean returnValue = true;
 
         String msgText = messageText.getText().toString();
@@ -214,26 +223,28 @@ public class CreateAutoMessage extends DialogFragment{
             messageText.setError(getString(R.string.not_be_empty));
         }
 
-        String dateStr = selectDate.getText().toString();
-        if (dateStr.isEmpty()){
-            returnValue = false;
-            selectDate.setError(getString(R.string.date_not_set));
-        }
+        if(!sendNow) {
+            String dateStr = selectDate.getText().toString();
+            if (dateStr.isEmpty()) {
+                returnValue = false;
+                selectDate.setError(getString(R.string.date_not_set));
+            }
 
-        String timeStr = selectTime.getText().toString();
-        if (timeStr.isEmpty()){
-            returnValue = false;
-            selectTime.setError(getString(R.string.time_not_set));
-        }
+            String timeStr = selectTime.getText().toString();
+            if (timeStr.isEmpty()) {
+                returnValue = false;
+                selectTime.setError(getString(R.string.time_not_set));
+            }
 
-        if (!dateTimeHelper.isDateValid()){
-            returnValue = false;
-            Toast.makeText(getContext(),getString(R.string.date_is_before),Toast.LENGTH_LONG).show();
-        }
+            if (!dateTimeHelper.isDateValid()) {
+                returnValue = false;
+                Toast.makeText(getContext(), getString(R.string.date_is_before), Toast.LENGTH_LONG).show();
+            }
 
-        if (autoSwitch.isChecked() && ((String)frequencySelector.getSelectedItem()).isEmpty()){
-            returnValue = false;
-            selectFrequencyText.setError(getString(R.string.must_select_freq));
+            if (autoSwitch.isChecked() && ((String) frequencySelector.getSelectedItem()).isEmpty()) {
+                returnValue = false;
+                selectFrequencyText.setError(getString(R.string.must_select_freq));
+            }
         }
 
         return returnValue;
@@ -268,7 +279,20 @@ public class CreateAutoMessage extends DialogFragment{
             new PermissionHelper().promptSMSPermission((Activity)getContext());
         }else{
             Toast.makeText(getContext(),getString(R.string.msg_sent),Toast.LENGTH_LONG).show();
+            addSentMessageToDB();
             endFragment();
         }
+    }
+
+    private void addSentMessageToDB(){
+        Message message = new Message();
+        message.setMessage(messageText.getText().toString());
+        message.setSent(true);
+        message.setAuto(false);
+        message.setDateToSend(new Date());
+        message.setMessageInterval((byte)-1);
+
+        MyApp.getDatabase().messageDao().insertMessage(message);
+
     }
 }

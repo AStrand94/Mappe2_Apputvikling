@@ -23,6 +23,7 @@ public class EntityItemAdapter<T extends MyEntity> extends ArrayAdapter<T>{
 
 
     @Override
+    @NonNull
     public View getView(int position, View convertView, @NonNull ViewGroup parent) {
 
         MyEntity myEntity = getItem(position);

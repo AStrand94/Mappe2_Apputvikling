@@ -28,7 +28,7 @@ public class AutoMessageActivity extends BaseActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         addMsgButton = findViewById(R.id.add_msg_btn);
-        setTitle(R.string.title_scheduled);
+        //setTitle(R.string.title_scheduled);
 
         initListeners();
     }

@@ -43,4 +43,5 @@
     <string name="stop_auto">Stop schedule</string>
     <string name="sent">Sent </string>
     <string name="send_now">Send now</string>
+    <string name="create">Create</string>
 </resources>

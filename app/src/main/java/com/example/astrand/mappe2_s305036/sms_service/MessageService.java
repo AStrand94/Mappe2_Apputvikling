@@ -22,7 +22,6 @@ public class MessageService extends Service{
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
 
-        Toast.makeText(this, "SENDING MESSAGE", Toast.LENGTH_SHORT).show();
         long id = intent.getLongExtra(MessageAlarmCreatorUtil.SMS_KEY,-1);
         Message message = MyApp.getDatabase().messageDao().getMessageById(id);
 

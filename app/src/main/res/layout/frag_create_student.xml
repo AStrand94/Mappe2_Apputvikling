@@ -11,7 +11,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="@string/first_name"
-        android:id="@+id/firstName" />
+        android:id="@+id/firstName"
+        app:roundedCorners="true"/>
     <com.beardedhen.androidbootstrap.BootstrapEditText
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -19,7 +20,8 @@
         android:layout_marginTop="15dp"
         android:layout_below="@+id/firstName"
         android:layout_alignParentStart="true"
-        android:id="@+id/lastName" />
+        android:id="@+id/lastName"
+        app:roundedCorners="true"/>
     <com.beardedhen.androidbootstrap.BootstrapEditText
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -28,11 +30,12 @@
         android:id="@+id/telephone"
         android:layout_below="@+id/lastName"
         android:layout_alignParentStart="true"
-        android:inputType="number"/>
+        android:inputType="number"
+        app:roundedCorners="true"/>
     <com.beardedhen.androidbootstrap.BootstrapButton
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/schedule"
+        android:text="@string/create"
         android:layout_marginTop="24dp"
         app:bootstrapBrand="success"
         android:id="@+id/save_auto_msg"

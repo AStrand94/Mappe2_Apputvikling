@@ -6,11 +6,16 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.FragmentManager;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.design.widget.BottomNavigationView;
+import android.support.v7.widget.ActionBarContainer;
 import android.support.v7.widget.ListViewCompat;
+import android.support.v7.widget.Toolbar;
+import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.example.astrand.mappe2_s305036.R;
@@ -33,6 +38,16 @@ public abstract class BaseActivity extends AppCompatActivity implements BottomNa
         viewList = findViewById(getViewListId());
         initList();
         permissionHelper.loopPermissions(this);
+
+        ActionBar actionBar = getSupportActionBar();
+        actionBar.setDisplayOptions(actionBar.getDisplayOptions() | ActionBar.DISPLAY_SHOW_CUSTOM);
+        ImageView imageView = new ImageView(actionBar.getThemedContext());
+        imageView.setScaleType(ImageView.ScaleType.CENTER);
+        imageView.setImageResource(R.mipmap.students_icon);
+        ActionBar.LayoutParams layoutParams = new ActionBar.LayoutParams(70, 60, Gravity.START | Gravity.CENTER_VERTICAL);
+        //layoutParams.rightMargin = 40;
+        imageView.setLayoutParams(layoutParams);
+        actionBar.setCustomView(imageView);
     }
 
     @Override
